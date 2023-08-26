@@ -1,4 +1,4 @@
-@extends('layouts/default')
+@extends('layouts/empty')
 
 @section('title', 'Y. It`s what`s happening / Y')
 

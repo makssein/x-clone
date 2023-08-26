@@ -38,9 +38,11 @@ function displayPost(data) {
         '        <img class="w-10 h-10 rounded-full mr-4" src="https://i.pravatar.cc/40" alt="avatar">\n' +
         '    </div>\n' +
         '    <div>\n' +
+        '     <a href="/profile/'+ data.user.username +'">' +
         '        <h5 class="font-bold mb-2">\n' +
         data.user.name +
         '            <span class="text-sm ml-1 font-normal text-gray-500">@'+ data.user.username +'</span>\n' +
+        '       </a>' +
         '            <span class="text-sm font-medium text-gray-500">&#183;</span>\n' +
         '            <span class="text-sm font-normal text-gray-500">'+ post_date +'</span>\n' +
         '        </h5>\n' +
@@ -52,8 +54,19 @@ function displayPost(data) {
     );
 }
 
-function getPosts() {
-    axios.get('/posts/get')
+function getFeed() {
+    axios.get('/posts/feed')
+        .then(data => {
+            data.data.reverse();
+            data.data.forEach(post => {
+                displayPost(post);
+            });
+        })
+        .catch(() => createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"}))
+}
+
+function getPosts(user_id) {
+    axios.get('/posts/'+ user_id +'/get')
         .then(data => {
             data.data.reverse();
             data.data.forEach(post => {

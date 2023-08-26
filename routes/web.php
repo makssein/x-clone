@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Web\Account\EditProfileController;
 use App\Http\Controllers\Web\Account\EmailVerificationController;
 use App\Http\Controllers\Web\Account\LoginController;
+use App\Http\Controllers\Web\Account\ProfileController;
+use App\Http\Controllers\Web\Follow\FollowsController;
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\Posts\PostsController;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +19,15 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware'  => ['auth', 'verified']], function () {
     Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
-        Route::get('/get', [PostsController::class, 'get'])->name('get');
+        Route::get('/feed', [PostsController::class, 'feed'])->name('feed');
+        Route::get('/{id}/get', [PostsController::class, 'get'])->name('posts');
         Route::post('/create', [PostsController::class, 'create'])->name('create');
+    });
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/{user:username}', [ProfileController::class, 'render'])->name('profile');
+        Route::post('/{user:username}/follow', [FollowsController::class, 'follow']);
+        Route::post('/edit', [EditProfileController::class, 'edit'])->name('edit');
     });
 });
 
