@@ -1,44 +1,35 @@
 <?php
 
-namespace App\Http\Requests\Account;
+namespace App\Http\Requests\Posts;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class SignInRequest extends FormRequest {
+class CreateRequest extends FormRequest
+{
     public function authorize() : bool {
-        return !Auth::check();
-    }
-
-    protected function prepareForValidation(){
-        $this->merge([
-            'remember' => (bool) $this->active,
-        ]);
+        return Auth::check();
     }
 
     public function rules(): array {
         return [
-            'email' => 'required|email',
-            'password' => ['required', Password::min(8)],
-            'remember' => 'nullable|boolean'
+            'text' => 'required|min:5|max:255'
         ];
     }
 
     public function attributes() : array {
         return [
-            'email' => 'Адрес электронной почты',
-            'password' => 'Пароль'
+            'text' => 'Текст',
         ];
     }
 
     public function messages() : array {
         return [
             'required' => ":attribute является обязательным полем.",
-            'email' => ':attribute должен быть в формате name@company.com.',
-            'min' => ':attribute должен быть минимум :min символов.'
+            'min' => ':attribute должен быть минимум :min символов.',
+            'max' => ':attribute может быть минимум :min символов.'
         ];
     }
 

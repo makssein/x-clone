@@ -10,7 +10,7 @@
 </head>
 <body class="dark dark:bg-slate-950">
 <div id="toasts" class="fixed right-5 pt-5 z-50"></div>
-<section class="px-8">
+<section class="px-32">
     <main class="container mx-auto">
         @yield('content')
     </main>
@@ -19,5 +19,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script src="{{asset('js/script.js')}}"></script>
+@yield('scripts')
 </body>
 </html>

@@ -12,7 +12,7 @@ $('#signin_form').submit(function (e) {
     axios.post(url, data)
         .then(data => {
             if(data.data.status) {
-                window.location.replace("/profile");
+                window.location.replace("/");
             } else {
                 createToast({...data.data});
             }
