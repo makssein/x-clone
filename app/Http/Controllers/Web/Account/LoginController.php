@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\SignInRequest;
 use App\Http\Requests\Account\SignUpRequest;
 use App\Models\User;
+use App\Notifications\Account\NewLoginActivityNotification;
 use App\Notifications\Account\VerifyEmailNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -16,8 +17,9 @@ class LoginController extends Controller
 {
 
     public function signin(SignInRequest $request) {
-
         if(Auth::attempt($request->only('email', 'password'), $request->post('remember'))) {
+
+            auth()->user()->notify(new NewLoginActivityNotification);
             return response()->json([
                 'status' => true,
                 'type' => "success",

@@ -15,6 +15,9 @@
                     <button type="submit" class="px-4 py-2 w-2/4 font-semibold text-lg bg-cyan-500 text-white rounded-full shadow-sm">
                         Отправить письмо еще раз
                     </button>
+                    <a href="{{route('logout')}}" class="text-center px-4 py-2 w-2/4 font-medium text-sm bg-transparent text-white rounded-full border">
+                        Выйти
+                    </a>
                 </form>
             </div>
         </div>
