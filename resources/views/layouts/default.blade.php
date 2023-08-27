@@ -39,7 +39,7 @@
                         <ul>
                             @php $follows = auth()->user()->follows->take(5) @endphp
                             @forelse($follows as $user)
-                                @include('includes/_follows-list')
+                                @include('includes/_sidebar-follows-list')
                             @empty
                                 <div class="flex justify-center items-center">
                                     <p class="text-gray-300">У вас нет подписок</p>

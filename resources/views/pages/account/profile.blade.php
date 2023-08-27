@@ -156,41 +156,71 @@
                     </div>
                 </div>
             </div>
-            <ul class="flex flex-nowrap justify-between -mb-px text-sm font-medium text-center w-full" role="tablist">
-                <li class="mr-2 w-1/2 cursor-pointer">
-                    <button class="inline-block p-4 border-b-4 font-bold border-cyan-300 rounded-t-lg" type="button" role="tab" aria-controls="profile" aria-selected="false">Посты</button>
+            <ul class="flex flex-nowrap justify-between -mb-px text-sm font-medium text-center w-full" id="tabs" data-tabs-toggle="#tabs_content" role="tablist">
+                <li class="mr-2 w-1/2 cursor-pointer" role="presentation">
+                    <button id="main_tab-tab" data-tabs-target="#main_tab" class="inline-block p-4 font-bold rounded-t-lg" type="button" role="tab" aria-selected="false">Посты</button>
                 </li>
-                <li class="mr-2 w-1/2">
-                    <button class="inline-block p-4 text-slate-600 font-bold rounded-t-lg" disabled type="button" role="tab" aria-controls="profile" aria-selected="false">Подписки</button>
+                <li class="mr-2 w-1/2" role="presentation">
+                    <button id="follows_tab-tab" data-tabs-target="#follows_tab" class="inline-block p-4 text-slate-600 font-bold rounded-t-lg" type="button" role="tab" aria-selected="false">Подписки</button>
                 </li>
-                <li class="mr-2 w-1/2">
-                    <button class="inline-block p-4 text-slate-600 font-bold rounded-t-lg" disabled type="button" role="tab" aria-controls="profile" aria-selected="false">Подписчики</button>
+                <li class="mr-2 w-1/2" role="presentation">
+                    <button id="followers_tab-tab" data-tabs-target="#followers_tab" class="inline-block p-4 text-slate-600 font-bold rounded-t-lg" type="button" role="tab" aria-selected="false">Подписчики</button>
                 </li>
             </ul>
         </div>
     </header>
-    @if(auth()->user()->is($user))
-        <form id="create_post_form" action="{{route('posts.create')}}" method="POST" class="flex flex-col item-center border-b border-gray-700 px-4 pt-4 pb-2">
-        @csrf
-        <div class="flex">
-            @if(auth()->user()->avatar)
-                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{auth()->user()->getAvatarLink()}}" alt="avatar">
-            @else
-                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{asset('/img/default/default-avatar.svg')}}" alt="avatar">
+    <div id="tabs_content">
+        <div id="main_tab">
+            @if(auth()->user()->is($user))
+                <form id="create_post_form" action="{{route('posts.create')}}" method="POST" class="flex flex-col item-center border-b border-gray-700 px-4 pt-4 pb-2">
+                @csrf
+                <div class="flex">
+                    @if(auth()->user()->avatar)
+                        <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{auth()->user()->getAvatarLink()}}" alt="avatar">
+                    @else
+                        <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{asset('/img/default/default-avatar.svg')}}" alt="avatar">
+                    @endif
+                    <textarea minlength="5" maxlength="255" name="text" class="block p-2.5 w-full text-xl dark:bg-transparent dark:placeholder-gray-400
+                                    dark:text-white border-0 focus:ring-0 resize-none overflow-hidden h-fit" placeholder="Что произошло?!"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="text-white font-medium rounded-full text-sm px-5 py-2.5
+                                    dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800">Опубликовать</button>
+                </div>
+            </form>
             @endif
-            <textarea minlength="5" maxlength="255" name="text" class="block p-2.5 w-full text-xl dark:bg-transparent dark:placeholder-gray-400
-                            dark:text-white border-0 focus:ring-0 resize-none overflow-hidden h-fit" placeholder="Что произошло?!"></textarea>
+            <div id="feed" class="flex items-center flex-col"></div>
         </div>
-        <div class="flex justify-end">
-            <button type="submit" class="text-white font-medium rounded-full text-sm px-5 py-2.5
-                            dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800">Опубликовать</button>
+        <div id="follows_tab">
+            <div class="flex flex-col w-full p-8">
+                @php $follows = auth()->user()->follows @endphp
+                @forelse($follows as $user)
+                    @include('includes/_follows-list', ['isFollowing' => true])  <!--Пользователь точно подписан на своих подписчиков, поэтому true -->
+                @empty
+                    <div class="flex justify-center items-center">
+                        <p class="text-gray-300">У вас нет подписок</p>
+                    </div>
+                @endforelse
+            </div>
         </div>
-    </form>
-    @endif
-    <div id="posts" class="flex items-center flex-col">
+        <div id="followers_tab">
+            <div class="flex flex-col w-full p-8">
+                @php $followers = auth()->user()->followers @endphp
+                @forelse($followers as $user)
+                     @php
+                         $isFollowing = $follows->contains($user);
+                     @endphp
+                    @include('includes/_follows-list', ['isFollowing' => $isFollowing])
+                @empty
+                    <div class="flex justify-center items-center">
+                        <p class="text-gray-300">У вас нет подписок</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
     </div>
 @endsection
 
 @section('scripts')
-    <script>getPosts({{$user->id}});</script>
+    <script>getFeed('/posts/'+ {{$user->id}} +'/get');</script>
 @endsection

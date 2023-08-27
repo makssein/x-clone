@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\Followable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,11 +51,11 @@ class User extends Authenticatable
         $ids = $this->follows->pluck('id');
         $ids->push($this->id);
 
-        return PostsModel::whereIn('user_id', $ids)->latest()->with('user')->get();
+        return PostsModel::whereIn('user_id', $ids)->latest()->with('user:avatar,username,name,id')->get();
     }
 
     public function posts() {
-        return $this->hasMany(PostsModel::class)->with('user')->latest();
+        return $this->hasMany(PostsModel::class)->with('user:avatar,username,name,id')->latest();
     }
 
     public function profileLink() {

@@ -183,7 +183,7 @@ $('#send_email_verification_form').submit(function (e) {
         });
 });
 
-$("#follow_user_form").submit(function (e) {
+$("#follow_user_form, [data-follow-form]").submit(function (e) {
     e.preventDefault();
 
     const _self = $(this);
@@ -291,7 +291,7 @@ $('#create_post_form').submit(function (e) {
         .then(data => {
             if(data.data.status) {
                 this.reset();
-                displayPost(data.data.object);
+                displayPost("#feed", data.data.object);
             } else {
                 createToast({...data.data});
             }
@@ -305,12 +305,16 @@ $('#create_post_form').submit(function (e) {
         });
 });
 
-function displayPost(data) {
-    const posts_block = $("#posts");
+function displayPost(selector, data) {
+    const posts_block = $(selector);
 
     const post_date = parsePostDate(data.created_at);
 
     const avatar_src = data.user.avatar ? '/storage/' + data.user.avatar : '/img/default/default-avatar.svg';
+
+    data.text = data.text.replaceAll("\r\n", "<br>");
+    data.text = data.text.replaceAll("\r", "<br>");
+    data.text = data.text.replaceAll("\n", "<br>");
 
     posts_block.prepend(
         '<div class="flex p-4 border-b border-gray-700 w-full">\n' +
@@ -326,7 +330,7 @@ function displayPost(data) {
         '            <span class="text-sm font-medium text-gray-500">&#183;</span>\n' +
         '            <span class="text-sm font-normal text-gray-500">'+ post_date +'</span>\n' +
         '        </h5>\n' +
-        '        <p class="text-sm">\n' +
+        '        <p class="text-sm whitespace-normal">\n' +
         data.text +
         '        </p>\n' +
         '    </div>\n' +
@@ -334,23 +338,12 @@ function displayPost(data) {
     );
 }
 
-function getFeed() {
-    axios.get('/posts/feed')
+function getFeed(url) {
+    axios.get(url)
         .then(data => {
             data.data.reverse();
             data.data.forEach(post => {
-                displayPost(post);
-            });
-        })
-        .catch(() => createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"}))
-}
-
-function getPosts(user_id) {
-    axios.get('/posts/'+ user_id +'/get')
-        .then(data => {
-            data.data.reverse();
-            data.data.forEach(post => {
-                displayPost(post);
+                displayPost('#feed', post);
             });
         })
         .catch(() => createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"}))
@@ -381,6 +374,32 @@ function parsePostDate(date) {
 
     return formatter.format(date);
 }
+
+new Tabs(
+    [
+        {
+            id: 'main',
+            triggerEl: document.querySelector('#main_tab-tab'),
+            targetEl: document.querySelector('#main_tab')
+        },
+        {
+            id: 'follows',
+            triggerEl: document.querySelector('#follows_tab-tab'),
+            targetEl: document.querySelector('#follows_tab')
+        },
+        {
+            id: 'followers',
+            triggerEl: document.querySelector('#followers_tab-tab'),
+            targetEl: document.querySelector('#followers_tab')
+        },
+    ],
+    {
+        defaultTabId: 'follows',
+        activeClasses: 'border-b-4 dark:border-cyan-300',
+        inactiveClasses: '_',
+    }
+);
+
 
 function createToast(data) {
     let toasts_block = $("#toasts");

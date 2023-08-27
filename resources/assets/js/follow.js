@@ -1,4 +1,4 @@
-$("#follow_user_form").submit(function (e) {
+$("#follow_user_form, [data-follow-form]").submit(function (e) {
     e.preventDefault();
 
     const _self = $(this);

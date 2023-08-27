@@ -7,12 +7,15 @@
         <div class="px-8 mb-4 self-start">
             <h1 class="text-xl font-bold">Главная</h1>
         </div>
-        <ul class="flex flex-nowrap justify-between -mb-px text-sm font-medium text-center w-full" role="tablist">
-            <li class="mr-2 w-1/2" role="button">
-                <button class="inline-block p-4 border-b-4 font-bold border-cyan-300 rounded-t-lg" type="button" role="tab" aria-controls="profile" aria-selected="false">Подписки</button>
+        <ul class="flex flex-nowrap justify-between -mb-px text-sm font-medium text-center w-full">
+            <li class="mr-2 w-1/2 cursor-pointer">
+                <button class="inline-block p-4 text-cyan-400 border-b-4 border-cyan-400 font-bold rounded-t-lg"
+                        aria-selected="false">Лента</button>
+
             </li>
             <li class="mr-2 w-1/2">
-                <button class="inline-block p-4 text-slate-600 font-bold rounded-t-lg" disabled type="button" role="tab" aria-controls="profile" aria-selected="false">Для вас </button>
+                <button disabled class="inline-block p-4 text-slate-600 font-bold rounded-t-lg"
+                        aria-selected="false">Для вас </button>
             </li>
         </ul>
     </div>
@@ -32,10 +35,10 @@
                             dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800">Опубликовать</button>
         </div>
     </form>
-    <div id="posts" class="flex items-center flex-col">
+    <div id="feed" role="tabpanel" class="flex items-center flex-col">
     </div>
 @endsection
 
 @section('scripts')
-    <script>getFeed();</script>
+    <script>getFeed("{{route('posts.feed')}}");</script>
 @endsection
