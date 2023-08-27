@@ -32,10 +32,12 @@ function displayPost(data) {
 
     const post_date = parsePostDate(data.created_at);
 
+    const avatar_src = data.user.avatar ? '/storage/' + data.user.avatar : '/img/default/default-avatar.svg';
+
     posts_block.prepend(
         '<div class="flex p-4 border-b border-gray-700 w-full">\n' +
         '    <div class="mr-2 flex-shrink-0">\n' +
-        '        <img class="w-10 h-10 rounded-full mr-4" src="https://i.pravatar.cc/40" alt="avatar">\n' +
+        '        <img class="w-10 h-10 rounded-full mr-4 object-cover" src="'+ avatar_src +'" alt="avatar">\n' +
         '    </div>\n' +
         '    <div>\n' +
         '     <a href="/profile/'+ data.user.username +'">' +

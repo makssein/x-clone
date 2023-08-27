@@ -36,7 +36,8 @@ class EditProfileController extends Controller {
             return response()->json([
                 'status' => true,
                 'type' => 'success',
-                'message' => 'Данные успешно сохранены.'
+                'message' => 'Данные успешно сохранены.',
+                'object' => auth()->user()
             ]);
         }
 

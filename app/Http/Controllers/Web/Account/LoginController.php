@@ -32,10 +32,11 @@ class LoginController extends Controller
         ]);
     }
 
-    public function signup(SignUpRequest $request) {
+    public function signup(SignUpRequest $request)
+    {
         $user = User::create($request->validated());
 
-        if($user) {
+        if ($user) {
             Auth::login($user);
             $user->notify(new VerifyEmailNotification);
 
@@ -52,5 +53,11 @@ class LoginController extends Controller
             'type' => "error",
             'message' => 'Произошла ошибка. Попробуйте еще раз.'
         ]);
+    }
+
+    public function logout() {
+        Auth::logout();
+
+        return redirect('/');
     }
 }

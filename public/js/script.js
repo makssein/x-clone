@@ -14,6 +14,7 @@ $('#edit_profile_form').submit(function (e) {
             if(data.data.status) {
                 _self.closest('#edit_profile-modal').find('button[data-modal-hide]').trigger('click'); //закрытие модального окна
                 createToast({...data.data});
+                updateProfile(data.data.object)
             } else {
                 createToast({...data.data});
             }
@@ -79,6 +80,81 @@ $("body").on('change', '#delete_banner', function () {
     }
 });
 
+function updateProfile(data) {
+   if(!data) return;
+
+   const profile_banner = $("#profile_banner");
+   const profile_avatar = $("#profile_avatar");
+   const profile_name = $("#profile_name");
+   const profile_username = $("#profile_username");
+   const profile_bio = $("#profile_bio");
+
+
+   profile_banner.attr('src', data.banner ? '/storage/' + data.banner : '/img/default/default-banner.svg');
+   profile_avatar.attr('src', data.avatar ? '/storage/' + data.avatar : '/img/default/default-avatar.svg');
+   profile_name.text(data.name);
+   profile_username.text('@' + data.username);
+   profile_bio.text(data.bio);
+}
+
+$("#update_info_form").submit(function(e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const submit_button = _self.find(':submit');
+    submit_button.addClass('disabled');
+    submit_button.prop('disabled', true);
+
+    const url = _self.attr('action');
+    const data = new FormData(this);
+
+    axios.post(url, data)
+        .then(data => {
+            if(data.data.status) {
+                window.location.href = data.data.redirect;
+            } else {
+                createToast({...data.data});
+            }
+        })
+        .catch(() => {
+            createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"});
+        })
+        .finally(() => {
+            submit_button.removeClass('disabled');
+            submit_button.prop('disabled', false);
+        });
+});
+
+
+$("#new_password_form").submit(function(e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const submit_button = _self.find(':submit');
+    submit_button.addClass('disabled');
+    submit_button.prop('disabled', true);
+
+    const url = _self.attr('action');
+    const data = new FormData(this);
+
+    axios.post(url, data)
+        .then(data => {
+            if(data.data.status) {
+                this.reset()
+                createToast({...data.data});
+            } else {
+                createToast({...data.data});
+            }
+        })
+        .catch(() => {
+            createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"});
+        })
+        .finally(() => {
+            submit_button.removeClass('disabled');
+            submit_button.prop('disabled', false);
+        });
+});
+
 $('#send_email_verification_form').submit(function (e) {
     e.preventDefault();
 
@@ -96,6 +172,40 @@ $('#send_email_verification_form').submit(function (e) {
                 createToast({...data.data});
             } else {
                 createToast({...data.data});
+            }
+        })
+        .catch(() => {
+            createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"});
+        })
+        .finally(() => {
+            submit_button.removeClass('disabled');
+            submit_button.prop('disabled', false);
+        });
+});
+
+$("#follow_user_form").submit(function (e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const submit_button = _self.find(':submit');
+    submit_button.addClass('disabled');
+    submit_button.prop('disabled', true);
+
+    const url = _self.attr('action');
+    const data = new FormData(this);
+
+    axios.post(url, data)
+        .then(data => {
+            if (data.data.status) {
+                if(submit_button.text().includes('Подписаться')) {
+                    submit_button.text('Отписаться')
+                        .removeClass('bg-cyan-600 hover:bg-cyan-700')
+                        .addClass('bg-transparent border border-slate-500  hover:bg-slate-800');
+                } else {
+                    submit_button.text('Подписаться')
+                        .removeClass('bg-transparent border border-slate-500  hover:bg-slate-800')
+                        .addClass('bg-cyan-600 hover:bg-cyan-700');
+                }
             }
         })
         .catch(() => {
@@ -200,10 +310,12 @@ function displayPost(data) {
 
     const post_date = parsePostDate(data.created_at);
 
+    const avatar_src = data.user.avatar ? '/storage/' + data.user.avatar : '/img/default/default-avatar.svg';
+
     posts_block.prepend(
         '<div class="flex p-4 border-b border-gray-700 w-full">\n' +
         '    <div class="mr-2 flex-shrink-0">\n' +
-        '        <img class="w-10 h-10 rounded-full mr-4" src="https://i.pravatar.cc/40" alt="avatar">\n' +
+        '        <img class="w-10 h-10 rounded-full mr-4 object-cover" src="'+ avatar_src +'" alt="avatar">\n' +
         '    </div>\n' +
         '    <div>\n' +
         '     <a href="/profile/'+ data.user.username +'">' +

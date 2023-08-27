@@ -13,7 +13,7 @@
 <section class="px-32 min-h-screen">
     <main class="container mx-auto min-h-screen">
         @yield('modals')
-        <div class="max-w-7xl mx-auto min-h-screenl">
+        <div class="max-w-7xl mx-auto min-h-screen">
             <div class="flex min-h-screen">
                 <div class="text-white w-3/12 pt-4 px-8">
                     @include('includes/_nav-links')

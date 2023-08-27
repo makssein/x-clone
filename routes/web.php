@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\Account\EditProfileController;
 use App\Http\Controllers\Web\Account\EmailVerificationController;
 use App\Http\Controllers\Web\Account\LoginController;
 use App\Http\Controllers\Web\Account\ProfileController;
+use App\Http\Controllers\Web\Account\SettingsController;
 use App\Http\Controllers\Web\Follow\FollowsController;
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\Posts\PostsController;
@@ -29,6 +30,14 @@ Route::group(['middleware'  => ['auth', 'verified']], function () {
         Route::post('/{user:username}/follow', [FollowsController::class, 'follow']);
         Route::post('/edit', [EditProfileController::class, 'edit'])->name('edit');
     });
+
+    Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+        Route::get('/', [SettingsController::class, 'render'])->name('settings');
+        Route::post('newinfo', [SettingsController::class, 'newInfo'])->name('newinfo');
+        Route::post('newpassword', [SettingsController::class, 'newPassword'])->name('newpassword');
+    });
+
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 

@@ -14,6 +14,7 @@ $('#edit_profile_form').submit(function (e) {
             if(data.data.status) {
                 _self.closest('#edit_profile-modal').find('button[data-modal-hide]').trigger('click'); //закрытие модального окна
                 createToast({...data.data});
+                updateProfile(data.data.object)
             } else {
                 createToast({...data.data});
             }
@@ -77,4 +78,79 @@ $("body").on('change', '#delete_banner', function () {
             _self.addClass("hidden");
         }
     }
+});
+
+function updateProfile(data) {
+   if(!data) return;
+
+   const profile_banner = $("#profile_banner");
+   const profile_avatar = $("#profile_avatar");
+   const profile_name = $("#profile_name");
+   const profile_username = $("#profile_username");
+   const profile_bio = $("#profile_bio");
+
+
+   profile_banner.attr('src', data.banner ? '/storage/' + data.banner : '/img/default/default-banner.svg');
+   profile_avatar.attr('src', data.avatar ? '/storage/' + data.avatar : '/img/default/default-avatar.svg');
+   profile_name.text(data.name);
+   profile_username.text('@' + data.username);
+   profile_bio.text(data.bio);
+}
+
+$("#update_info_form").submit(function(e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const submit_button = _self.find(':submit');
+    submit_button.addClass('disabled');
+    submit_button.prop('disabled', true);
+
+    const url = _self.attr('action');
+    const data = new FormData(this);
+
+    axios.post(url, data)
+        .then(data => {
+            if(data.data.status) {
+                window.location.href = data.data.redirect;
+            } else {
+                createToast({...data.data});
+            }
+        })
+        .catch(() => {
+            createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"});
+        })
+        .finally(() => {
+            submit_button.removeClass('disabled');
+            submit_button.prop('disabled', false);
+        });
+});
+
+
+$("#new_password_form").submit(function(e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const submit_button = _self.find(':submit');
+    submit_button.addClass('disabled');
+    submit_button.prop('disabled', true);
+
+    const url = _self.attr('action');
+    const data = new FormData(this);
+
+    axios.post(url, data)
+        .then(data => {
+            if(data.data.status) {
+                this.reset()
+                createToast({...data.data});
+            } else {
+                createToast({...data.data});
+            }
+        })
+        .catch(() => {
+            createToast({message: "Произошла ошибка. Попробуйте еще раз.", type: "error"});
+        })
+        .finally(() => {
+            submit_button.removeClass('disabled');
+            submit_button.prop('disabled', false);
+        });
 });

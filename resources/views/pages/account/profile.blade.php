@@ -3,7 +3,8 @@
 @section('title', "$user->name (@$user->username)")
 
 @section('modals')
-    <div id="edit_profile-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    @if(auth()->user()->is($user))
+        <div id="edit_profile-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-xl max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-slate-950">
                 <form id="edit_profile_form" action="{{route('profile.edit')}}" method="POST" class="flex flex-col">
@@ -82,21 +83,22 @@
             </div>
         </div>
     </div>
+    @endif
 @endsection
 
 @section('content')
     <header class="border-b border-gray-700">
         @if($user->banner)
-            <img class="h-48 w-full object-cover" src="{{$user->getBannerLink()}}" alt="banner">
+            <img class="h-48 w-full object-cover" id="profile_banner" src="{{$user->getBannerLink()}}" alt="banner">
         @else
-            <img class="h-48 w-full object-cover" src="{{asset('img/default/default-banner.svg')}}" alt="banner">
+            <img class="h-48 w-full object-cover" id="profile_banner" src="{{asset('img/default/default-banner.svg')}}" alt="banner">
         @endif
         <div class="flex justify-between">
             <div class="flex -mt-16 pl-4">
                 @if($user->avatar)
-                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" src="{{$user->getAvatarLink()}}" alt="Rounded avatar">
+                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" id="profile_avatar" src="{{$user->getAvatarLink()}}" alt="Rounded avatar">
                 @else
-                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" src="{{asset('img/default/default-avatar.svg')}}" alt="Rounded avatar">
+                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" id="profile_avatar" src="{{asset('img/default/default-avatar.svg')}}" alt="Rounded avatar">
                 @endif
             </div>
             @if(auth()->user()->is($user))
@@ -107,25 +109,30 @@
                     </button>
                 </div>
             @else
-                <form class="flex items-start justify-center p-4" action="{{$user->profileLink()}}/follow" method="POST">
+                <form id="follow_user_form" class="flex items-start justify-center p-4" action="{{$user->profileLink()}}/follow" method="POST">
                     @csrf
-                    <button class="px-4 py-2 font-medium text-sm
-                     bg-cyan-600 text-white rounded-full shadow-sm hover:bg-cyan-700">
-                        {{auth()->user()->isFollowing($user) ? 'Отписаться' : 'Подписаться'}}
-                    </button>
+                    @if(auth()->user()->isFollowing($user))
+                        <button type="submit" class="px-4 py-2 font-medium text-sm
+                         bg-transparent border border-slate-500 text-white rounded-full shadow-sm hover:bg-slate-800">
+                            Отписаться
+                        </button>
+                    @else
+                        <button type="submit" class="px-4 py-2 font-medium text-sm
+                            bg-cyan-600 text-white rounded-full shadow-sm hover:bg-cyan-700">
+                            Подписаться
+                        </button>
+                    @endif
                 </form>
             @endif
         </div>
         <div class="flex flex-col px-4 pt-4">
             <div class="mb-2">
-                <h5 class="font-bold text-xl">{{$user->name}}</h5>
-                <span class="text-slate-500 text-sm">{{'@'.$user->username}}</span>
+                <h5 class="font-bold text-xl" id="profile_name">{{$user->name}}</h5>
+                <span class="text-slate-500 text-sm" id="profile_username">{{'@'.$user->username}}</span>
             </div>
-            @if($user->bio)
             <div class="mb-4">
-                <p class="text-gray-200">{!!nl2br($user->bio)!!}</p>
+                <p class="text-gray-200" id="profile_bio">{!!nl2br($user->bio)!!}</p>
             </div>
-            @endif
             <div>
                 <div class="flex text-slate-500 text-sm">
                     @if($user->website)
@@ -150,7 +157,7 @@
                 </div>
             </div>
             <ul class="flex flex-nowrap justify-between -mb-px text-sm font-medium text-center w-full" role="tablist">
-                <li class="mr-2 w-1/2" role="button">
+                <li class="mr-2 w-1/2 cursor-pointer">
                     <button class="inline-block p-4 border-b-4 font-bold border-cyan-300 rounded-t-lg" type="button" role="tab" aria-controls="profile" aria-selected="false">Посты</button>
                 </li>
                 <li class="mr-2 w-1/2">
@@ -162,10 +169,15 @@
             </ul>
         </div>
     </header>
-    <form id="create_post_form" action="{{route('posts.create')}}" method="POST" class="flex flex-col item-center border-b border-gray-700 px-4 pt-4 pb-2">
+    @if(auth()->user()->is($user))
+        <form id="create_post_form" action="{{route('posts.create')}}" method="POST" class="flex flex-col item-center border-b border-gray-700 px-4 pt-4 pb-2">
         @csrf
         <div class="flex">
-            <img class="w-10 h-10 rounded-full mr-4" src="https://i.pravatar.cc/40" alt="avatar">
+            @if(auth()->user()->avatar)
+                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{auth()->user()->getAvatarLink()}}" alt="avatar">
+            @else
+                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{asset('/img/default/default-avatar.svg')}}" alt="avatar">
+            @endif
             <textarea minlength="5" maxlength="255" name="text" class="block p-2.5 w-full text-xl dark:bg-transparent dark:placeholder-gray-400
                             dark:text-white border-0 focus:ring-0 resize-none overflow-hidden h-fit" placeholder="Что произошло?!"></textarea>
         </div>
@@ -174,6 +186,7 @@
                             dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800">Опубликовать</button>
         </div>
     </form>
+    @endif
     <div id="posts" class="flex items-center flex-col">
     </div>
 @endsection

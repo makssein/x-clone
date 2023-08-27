@@ -19,7 +19,11 @@
     <form id="create_post_form" action="{{route('posts.create')}}" method="POST" class="flex flex-col item-center border-b border-gray-700 px-4 pt-4 pb-2">
         @csrf
         <div class="flex">
-            <img class="w-10 h-10 rounded-full mr-4" src="https://i.pravatar.cc/40" alt="avatar">
+            @if(auth()->user()->avatar)
+                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{auth()->user()->getAvatarLink()}}" alt="avatar">
+            @else
+                <img class="w-10 h-10 rounded-full mr-4 object-cover" src="{{asset('/img/default/default-avatar.svg')}}" alt="avatar">
+            @endif
             <textarea minlength="5" maxlength="255" name="text" class="block p-2.5 w-full text-xl dark:bg-transparent dark:placeholder-gray-400
                             dark:text-white border-0 focus:ring-0 resize-none overflow-hidden h-fit" placeholder="Что произошло?!"></textarea>
         </div>

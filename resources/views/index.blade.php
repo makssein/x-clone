@@ -71,7 +71,7 @@
                         </div>
                         <div>
                             <label for="reg_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Пароль</label>
-                            <input type="password" name="password" autocomplete="off" id="reg_password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                            <input type="password" name="password" minlength="8" maxlength="255" autocomplete="off" id="reg_password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                         </div>
                         <button type="submit" class="w-full text-white focus:ring-4 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:bg-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Регистрация</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
