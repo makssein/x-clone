@@ -26,3 +26,55 @@ $('#edit_profile_form').submit(function (e) {
             submit_button.prop('disabled', false);
         });
 });
+
+$("#banner_input, #avatar_input").change(function (e) {
+    e.preventDefault();
+
+    const _self = $(this);
+    const image = _self.prop('files')[0];
+
+    const id = _self.attr('id');
+    const preview_id = id.split('_')[0];
+
+    if(id === 'banner_input') {
+        const label = $("label[for='delete_banner']");
+
+        label.removeClass('hidden');
+    }
+
+    if(!image) return;
+
+    if((image.size / 10**6) > 5) {
+        return createToast({message: "Файл слишком большой. Максимальный размер - 5 мб.", type: "error"});
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        $("#"+ preview_id +"_preview").attr('src', reader.result);
+    };
+
+    reader.readAsDataURL(image);
+});
+
+$("body").on('change', '#delete_banner', function () {
+    const _self = $(this);
+    const checked = _self.is(":checked");
+
+    if(checked) {
+        const avatar_preview = $("#banner_preview");
+        const src = avatar_preview.attr('src');
+        const data_src = avatar_preview.attr('data-user-banner-link');
+
+        if(data_src && src !== data_src) { //уже был установлен какой-то баннер: превью поверх основного баннера или просто основной баннер
+            avatar_preview.attr('src', data_src);
+            _self.prop('checked', false);
+            $("#banner_input").val(''); //очищаем инпут с картинкой
+        } else { //удаляется либо превью, если баннера не было, либо сам баннер
+            avatar_preview.attr('src', '/img/default/default-banner.svg');
+            avatar_preview.removeAttr('data-user-avatar-link');
+            _self.closest('label').addClass("hidden");
+            _self.addClass("hidden");
+        }
+    }
+});

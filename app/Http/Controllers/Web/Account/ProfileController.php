@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     public function render(User $user) {
-        $profile_info = $user->profileInfo;
-        return view('pages/account/profile', compact('user', 'profile_info'));
+        return view('pages/account/profile', compact('user'));
     }
 }

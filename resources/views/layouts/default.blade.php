@@ -37,11 +37,18 @@
                     <div class="flex flex-col max-w-sm p-6 bg-white border border-gray-200 rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700">
                         <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Подписки</h5>
                         <ul>
-                            @foreach(auth()->user()->follows->take(5) as $user)
+                            @php $follows = auth()->user()->follows->take(5) @endphp
+                            @forelse($follows as $user)
                                 @include('includes/_follows-list')
-                            @endforeach
+                            @empty
+                                <div class="flex justify-center items-center">
+                                    <p class="text-gray-300">У вас нет подписок</p>
+                                </div>
+                            @endforelse
                         </ul>
-                        <a href="#" class="text-sm self-center text-cyan-300 hover:text-cyan-600">Посмотреть всех</a>
+                        @if($follows->isNotEmpty())
+                            <a href="#" class="text-sm self-center text-cyan-300 hover:text-cyan-600">Посмотреть всех</a>
+                        @endif
                     </div>
                 </div>
             </div>

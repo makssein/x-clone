@@ -6,7 +6,7 @@
     <div id="edit_profile-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-xl max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-slate-950">
-                <div class="flex flex-col">
+                <form id="edit_profile_form" action="{{route('profile.edit')}}" method="POST" class="flex flex-col">
                     <header class="flex justify-between items-center px-6 py-4 lg:px-8">
                         <span class="text-white font-bold text-xl">
                             Редактирование профиля
@@ -18,13 +18,51 @@
                             <span class="sr-only">Закрыть окно</span>
                         </button>
                     </header>
-                    <div class="flex">
-                        <img class="h-48 w-full object-cover" src="https://styles.redditmedia.com/t5_7h4z23/styles/profileBanner_b7chu8dlkr2a1.jpeg" alt="banner">
+                    <div class="relative h-48">
+                        @if($user->banner)
+                            <img class="h-48 w-full object-cover" id="banner_preview" data-user-banner-link="{{$user->getBannerLink()}}" src="{{$user->getBannerLink()}}" alt="banner">
+                        @else
+                            <img class="h-48 w-full object-cover" id="banner_preview" src="{{asset('img/default/default-banner.svg')}}" alt="banner">
+                        @endif
+                        <div class="flex h-48 justify-center items-center -mt-48" id="banner_controls">
+                            <label for="banner_input" class="bg-transparent flex items-center justify-center cursor-pointer bg-gray-50 ">
+                                <span class="flex items-center justify-center bg-gray-900 hover:bg-opacity-90 w-12 h-12 mr-2 text-gray-200 bg-opacity-50 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                    </svg>
+                                </span>
+                                <input id="banner_input" name="banner" type="file" class="hidden" accept="image/png, image/jpeg" />
+                            </label>
+                            @if($user->banner)
+                                <label for="delete_banner" class="cursor-pointer">
+                                    <span class="flex items-center justify-center bg-gray-900 w-12 h-12 ml-2 text-gray-200 bg-opacity-50 hover:bg-opacity-90 rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </span>
+                                    <input id="delete_banner" name="delete_banner" type="checkbox" class="hidden">
+                                </label>
+                            @endif
+                        </div>
                     </div>
-                    <div class="flex pl-4 -mt-16">
-                        <img class="w-28 h-28 ring ring-slate-950 rounded-full" src="https://realsnooker.com/storage/avatars/646d39a1c741ef51e4078554.jpg?1693077421202" alt="Rounded avatar">
+                    <div class="relative pl-4 -mt-16 h-28">
+                        @if($user->avatar)
+                            <img class="w-28 h-28 ring ring-slate-950 rounded-full object-cover" id="avatar_preview" src="{{$user->getAvatarLink()}}" alt="Rounded avatar">
+                        @else
+                            <img class="w-28 h-28 ring ring-slate-950 rounded-full object-cover" id="avatar_preview" src="{{asset('img/default/default-avatar.svg')}}" alt="avatar">
+                        @endif
+                        <div class="flex h-28 justify-start items-center -mt-28 pl-8">
+                            <label for="avatar_input" class="bg-transparent flex flex items-center justify-center cursor-pointer bg-gray-50">
+                                <span class="flex items-center justify-center bg-gray-900 w-12 h-12 text-gray-200 bg-opacity-50 hover:bg-opacity-90 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                    </svg>
+                                </span>
+                                <input id="avatar_input" name="avatar" type="file" class="hidden" />
+                            </label>
+                        </div>
                     </div>
-                    <form id="edit_profile_form" action="{{route('profile.edit')}}" method="POST" class="flex flex-col w-full items-center justify-center p-4">
+                    <div class="flex flex-col w-full items-center justify-center p-4">
                         @csrf
                         <div class="w-full mb-4">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Имя</label>
@@ -32,15 +70,15 @@
                         </div>
                         <div class="w-full mb-4">
                             <label for="bio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Описание</label>
-                            <textarea type="text" minlength="5" maxlength="255" name="bio" autocomplete="off" id="bio" placeholder="Описание" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">{{$profile_info?->bio}}</textarea>
+                            <textarea type="text" minlength="5" maxlength="255" name="bio" autocomplete="off" id="bio" placeholder="Описание" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">{{$user?->bio}}</textarea>
                         </div>
                         <div class="w-full mb-4">
-                            <label for="link" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Сайт</label>
-                            <input type="text" name="link" autocomplete="off" id="link" placeholder="Ссылка на Ваш сайт" value="{{$profile_info?->link}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Сайт</label>
+                            <input type="text" name="website" autocomplete="off" id="website" placeholder="Ссылка на Ваш сайт" value="{{$user?->website}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                         </div>
                         <button type="submit" class="w-full text-white focus:ring-4 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:bg-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Сохранить</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -48,12 +86,20 @@
 
 @section('content')
     <header class="border-b border-gray-700">
-        <img class="h-48 w-full object-cover" src="https://styles.redditmedia.com/t5_7h4z23/styles/profileBanner_b7chu8dlkr2a1.jpeg" alt="banner">
+        @if($user->banner)
+            <img class="h-48 w-full object-cover" src="{{$user->getBannerLink()}}" alt="banner">
+        @else
+            <img class="h-48 w-full object-cover" src="{{asset('img/default/default-banner.svg')}}" alt="banner">
+        @endif
         <div class="flex justify-between">
             <div class="flex -mt-16 pl-4">
-                <img class="w-32 h-32 ring ring-slate-950 rounded-full" src="https://realsnooker.com/storage/avatars/646d39a1c741ef51e4078554.jpg?1693077421202" alt="Rounded avatar">
+                @if($user->avatar)
+                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" src="{{$user->getAvatarLink()}}" alt="Rounded avatar">
+                @else
+                    <img class="w-32 h-32 ring ring-slate-950 rounded-full object-cover" src="{{asset('img/default/default-avatar.svg')}}" alt="Rounded avatar">
+                @endif
             </div>
-            @if($user->id === auth()->id())
+            @if(auth()->user()->is($user))
                 <div class="flex items-start justify-center p-4">
                     <button data-modal-target="edit_profile-modal" data-modal-toggle="edit_profile-modal" class="px-4 py-2 font-medium text-sm border-2 border-gray-500
                          bg-transparent text-white rounded-full shadow-sm hover:bg-slate-900">
@@ -75,20 +121,20 @@
                 <h5 class="font-bold text-xl">{{$user->name}}</h5>
                 <span class="text-slate-500 text-sm">{{'@'.$user->username}}</span>
             </div>
-            @if($profile_info && $profile_info->bio)
+            @if($user->bio)
             <div class="mb-4">
-                <p class="text-gray-200">{!!nl2br($profile_info->bio)!!}</p>
+                <p class="text-gray-200">{!!nl2br($user->bio)!!}</p>
             </div>
             @endif
             <div>
                 <div class="flex text-slate-500 text-sm">
-                    @if($profile_info && $profile_info->link)
+                    @if($user->website)
                         <div class="flex mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
                             </svg>
-                            <a class="ml-1 text-cyan-400 hover:text-cyan-600" href="{{$profile_info->link}}">
-                                {{$profile_info->link}}
+                            <a class="ml-1 text-cyan-400 hover:text-cyan-600" href="{{$user->website}}">
+                                {{$user->website}}
                             </a>
                         </div>
                     @endif

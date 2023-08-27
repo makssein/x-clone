@@ -36,6 +36,7 @@ class LoginController extends Controller
         $user = User::create($request->validated());
 
         if($user) {
+            Auth::login($user);
             $user->notify(new VerifyEmailNotification);
 
             return response()->json([

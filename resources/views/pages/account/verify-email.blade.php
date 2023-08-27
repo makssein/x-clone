@@ -1,4 +1,4 @@
-@extends('layouts/default')
+@extends('layouts/empty')
 
 @section('title', 'Подтверждение адреса электронной почты')
 

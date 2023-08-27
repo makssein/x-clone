@@ -1,6 +1,6 @@
 @extends('layouts/default')
 
-@section('title', 'home')
+@section('title', 'Лента')
 
 @section('content')
     <div class="flex flex-col items-center border-b border-gray-700 pt-4">

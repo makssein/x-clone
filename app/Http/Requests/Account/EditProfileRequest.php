@@ -18,7 +18,10 @@ class EditProfileRequest extends FormRequest
         return [
             'name' => 'required|min:3|string|max:255',
             'bio' => 'nullable|string|min:5|max:255',
-            'link' => 'nullable|active_url'
+            'website' => 'nullable|active_url',
+            'banner' => 'nullable|image|max:5120|mimes:jpg,png',
+            'avatar' => 'nullable|image|max:5120|mimes:jpg,png',
+            'delete_banner' => 'sometimes'
         ];
     }
 
@@ -26,17 +29,23 @@ class EditProfileRequest extends FormRequest
         return [
             'name' => 'Имя',
             'bio' => 'Описание',
-            'link' => 'Ссылка'
+            'website' => 'Ссылка',
+            'banner' => 'Баннер',
+            'avatar' => 'Аватар'
         ];
     }
 
     public function messages() : array {
         return [
             'required' => ":attribute является обязательным полем.",
-            'min' => ':attribute должен быть минимум :min символов.',
+            'name.min' => ':attribute должен быть минимум :min символов.',
             'string' => ':attribute должен быть строкой.',
-            'max' => ':attribute может быть максимум :max символов.',
-            'active_url' => ':attribute должна быть рабочей ссылкой.'
+            'name.max' => ':attribute может быть максимум :max символов.',
+            'active_url' => ':attribute должна быть рабочей ссылкой.',
+            'image' => ':attribute должен быть изображением.',
+            'banner.max' => ':attribute может быть максимум :max КБ',
+            'avatar.max' => ':attribute может быть максимум :max КБ',
+            'mimes' => ':attribute может быть только в формате PNG, JPG.'
         ];
     }
 

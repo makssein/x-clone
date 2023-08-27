@@ -23,6 +23,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'avatar',
+        'banner'
     ];
 
     /**
@@ -61,7 +63,11 @@ class User extends Authenticatable
         return route('profile.profile', $this->username);
     }
 
-    public function profileInfo() {
-        return $this->hasOne(ProfileInfoModel::class);
+    public function getAvatarLink() {
+        return url('/storage/'.$this->avatar);
+    }
+
+    public function getBannerLink() {
+        return url('/storage/'.$this->banner);
     }
 }
