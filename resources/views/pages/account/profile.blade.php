@@ -194,7 +194,7 @@
         <div id="follows_tab">
             <div class="flex flex-col w-full p-8">
                 @php $follows = auth()->user()->follows @endphp
-                @forelse($follows as $user)
+                @forelse($follows as $u)
                     @include('includes/_follows-list', ['isFollowing' => true])  <!--Пользователь точно подписан на своих подписчиков, поэтому true -->
                 @empty
                     <div class="flex justify-center items-center">
@@ -206,9 +206,9 @@
         <div id="followers_tab">
             <div class="flex flex-col w-full p-8">
                 @php $followers = auth()->user()->followers @endphp
-                @forelse($followers as $user)
+                @forelse($followers as $u)
                      @php
-                         $isFollowing = $follows->contains($user);
+                         $isFollowing = $follows->contains($u);
                      @endphp
                     @include('includes/_follows-list', ['isFollowing' => $isFollowing])
                 @empty
@@ -222,5 +222,5 @@
 @endsection
 
 @section('scripts')
-    <script>getFeed('/posts/'+ {{$user->id}} +'/get');</script>
+    <script>getFeed('/posts/{{$user->id}}/get');</script>
 @endsection

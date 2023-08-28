@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web\Follow;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class FollowsController extends Controller
 {
@@ -14,7 +13,7 @@ class FollowsController extends Controller
                 'status' => true
             ]);
         }
-        
+
         auth()->user()->toggleFollow($user);
 
         return response()->json([

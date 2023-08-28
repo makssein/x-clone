@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\Account\SettingsController;
 use App\Http\Controllers\Web\Follow\FollowsController;
 use App\Http\Controllers\Web\IndexController;
 use App\Http\Controllers\Web\Posts\PostsController;
+use App\Http\Controllers\Web\Search\SearchController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,6 +37,8 @@ Route::group(['middleware'  => ['auth', 'verified']], function () {
         Route::post('newinfo', [SettingsController::class, 'newInfo'])->name('newinfo');
         Route::post('newpassword', [SettingsController::class, 'newPassword'])->name('newpassword');
     });
+
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

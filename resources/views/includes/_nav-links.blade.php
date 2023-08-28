@@ -12,7 +12,7 @@
             </svg>
         </span>
             <a class="font-bold text-2xl" href="{{route('/')}}">
-                Home
+                Главная
             </a>
         </li>
         <li class="flex items-center mb-7">
@@ -52,7 +52,7 @@
             </svg>
         </span>
             <a class="font-bold text-2xl" href="{{route('profile.profile', auth()->user()->username)}}">
-                Profile
+                Профиль
             </a>
         </li>
     </ul>
