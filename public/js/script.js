@@ -318,22 +318,26 @@ function displayPost(selector, data) {
 
     posts_block.prepend(
         '<div class="flex p-4 border-b border-gray-700 w-full">\n' +
-        '    <div class="mr-2 flex-shrink-0">\n' +
-        '        <img class="w-10 h-10 rounded-full mr-4 object-cover" src="'+ avatar_src +'" alt="avatar">\n' +
-        '    </div>\n' +
-        '    <div>\n' +
-        '     <a href="/profile/'+ data.user.username +'">' +
-        '        <h5 class="font-bold mb-2">\n' +
-        data.user.name +
-        '            <span class="text-sm ml-1 font-normal text-gray-500">@'+ data.user.username +'</span>\n' +
-        '       </a>' +
-        '            <span class="text-sm font-medium text-gray-500">&#183;</span>\n' +
-        '            <span class="text-sm font-normal text-gray-500">'+ post_date +'</span>\n' +
-        '        </h5>\n' +
-        '        <p class="text-sm whitespace-normal">\n' +
-        data.text +
-        '        </p>\n' +
-        '    </div>\n' +
+        '   <div class="mr-2 flex-shrink-0">\n' +
+        '       <img class="w-10 h-10 rounded-full mr-4 object-cover" src="'+ avatar_src +'" alt="avatar">\n' +
+        '   </div>\n' +
+        '   <div class="w-full">\n' +
+    '           <div class="flex items-center justify-between w-full">' +
+    '               <div class="flex items-center">' +
+    '                   <a href="/profile/'+ data.user.username +'">' +
+    '                       <h5 class="font-bold">\n' +
+                                data.user.name +
+    '                           <span class="text-sm ml-1 font-normal text-gray-500">@'+ data.user.username +'</span>\n' +
+    '                       </h5>\n' +
+    '                   </a>' +
+    '                   <span class="text-sm mt-0.5 ml-1 font-medium text-gray-500">&#183;</span>\n' +
+    '                   <span class="text-sm mt-0.5 ml-1 font-normal text-gray-500">'+ post_date +'</span>\n' +
+    '               </div>' +
+    '           </div>' +
+    '           <p class="text-sm whitespace-normal">\n' +
+                    data.text +
+    '           </p>\n' +
+    '       </div>\n' +
         '</div>'
     );
 }

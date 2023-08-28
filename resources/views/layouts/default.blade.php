@@ -46,9 +46,6 @@
                                 </div>
                             @endforelse
                         </ul>
-                        @if($follows->isNotEmpty())
-                            <a href="#" class="text-sm self-center text-cyan-300 hover:text-cyan-600">Посмотреть всех</a>
-                        @endif
                     </div>
                 </div>
             </div>
