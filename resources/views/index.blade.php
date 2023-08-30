@@ -37,7 +37,7 @@
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
                             Нет аккаунта? <a data-modal-target="signup-modal" data-modal-hide="signin-modal" data-modal-toggle="signup-modal" href="javascript:void(0);" class="text-blue-700 hover:underline dark:text-cyan-500">Регистрация</a>
                             <br><br>
-                            P.S. Сайт является примером проекта. Если вы не хотите создавать аккаунт, можете использовать тестового пользователя: username: user, password: 123456789
+                            P.S. Сайт является примером проекта. Если вы не хотите создавать аккаунт, можете использовать тестового пользователя:  email: help@maximsein.ru, password: 123456789
                         </div>
                     </form>
                 </div>
@@ -75,7 +75,7 @@
                         </div>
                         <button type="submit" class="w-full text-white focus:ring-4 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:bg-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Регистрация</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            P.S. Сайт является примером проекта. Если вы не хотите создавать аккаунт, можете использовать тестового пользователя: username: user, password: 123456789
+                            P.S. Сайт является примером проекта. Если вы не хотите создавать аккаунт, можете использовать тестового пользователя: email: help@maximsein.ru, password: 123456789
                         </div>
                     </form>
                 </div>

@@ -19,7 +19,8 @@ class SettingsController extends Controller
             return response()->json([
                 'status' => true,
                 'type' => 'success',
-                'message' => 'На данном аккаунте нельзя менять имя пользователя.'
+                'message' => 'На данном аккаунте нельзя менять имя пользователя.',
+                'redirect' => auth()->user()->profileLink()
             ]);
         }
 
@@ -45,7 +46,7 @@ class SettingsController extends Controller
         if(auth()->user()->username === 'user') { //это тестовый аккаунт для тех, кто не хочет регистрироваться, на нем нельзя менять данные, нужные для логина
             return response()->json([
                 'status' => true,
-                'type' => 'success',
+                'type' => 'warn',
                 'message' => 'На данном аккаунте нельзя менять пароль.'
             ]);
         }
