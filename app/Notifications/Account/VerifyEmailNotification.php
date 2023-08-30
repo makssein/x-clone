@@ -22,7 +22,7 @@ class VerifyEmailNotification extends VerifyEmail implements ShouldQueue
 
         return (new MailMessage)
             ->greeting("Привет, @$notifiable->username!")
-            ->subject('Подтверждение регистрации! | Y.com')
+            ->subject('Подтверждение регистрации! | '.config('app.url'))
             ->line('Используйте действие ниже, чтобы подтвердить регистрацию.')
             ->action('Подтвердить почту', $verificationUrl)
             ->salutation('Спасибо за регистрацию на нашем сайте!');
