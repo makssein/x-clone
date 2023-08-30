@@ -39,8 +39,8 @@
                  alt="avatar">
         @endif
         <div class="flex flex-col items-start justify-center">
-            <h5 class="font-bold text-base">Максим Сеин</h5>
-            <span class="text-slate-500 text-xs">@deekep</span>
+            <h5 class="font-bold text-base">{{auth()->user()->name}}</h5>
+            <span class="text-slate-500 text-xs">{{'@'.auth()->user()->username}}</span>
         </div>
     </div>
     <div id="dropdownProfile"
