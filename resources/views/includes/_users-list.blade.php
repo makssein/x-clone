@@ -6,8 +6,10 @@
             <img alt="avatar" class="w-24 h-24 rounded-full mr-4" src="{{asset('img/default/default-avatar.svg')}}">
         @endif
         <div class="flex flex-col items-start justify-center">
-            <h5 class="font-bold text-xl">{{$u->name}}</h5>
-            <span class="text-slate-500 text-base">{{"@$u->username"}}</span>
+            <a href="{{$u->profileLink()}}">
+                <h5 class="font-bold text-xl">{{$u->name}}</h5>
+                <span class="text-slate-500 text-base">{{"@$u->username"}}</span>
+            </a>
         </div>
     </div>
     @if(auth()->user()->isNot($u))

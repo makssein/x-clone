@@ -31,7 +31,6 @@
                                 </div>
                                 <label for="remember" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Запомнить меня</label>
                             </div>
-{{--                            <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Забыли пароль?</a>--}}
                         </div>
                         <button type="submit" class="w-full text-white focus:ring-4 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:bg-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-cyan-900">Войти</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">

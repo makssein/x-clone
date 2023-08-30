@@ -13,7 +13,7 @@
                 @php
                     $isFollowing = $follows->contains($u);
                 @endphp
-                @include('includes/_follows-list' , ['isFollowing' => $isFollowing])
+                @include('includes/_users-list' , ['isFollowing' => $isFollowing])
             @empty
                 <p class="self-center text-gray-300">Ничего не найдено</p>
             @endforelse
