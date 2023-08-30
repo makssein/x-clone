@@ -1,9 +1,9 @@
 <div class="flex items-center justify-between w-full mb-6">
     <div class="flex items-center">
         @if($u->avatar)
-            <img alt="avatar object-cover" class="w-24 h-24 rounded-full mr-4" src="{{$u->getAvatarLink()}}">
+            <img alt="avatar" class="w-24 h-24 rounded-full mr-4 object-cover" src="{{$u->getAvatarLink()}}">
         @else
-            <img alt="avatar object-cover" class="w-24 h-24 rounded-full mr-4" src="{{asset('img/default/default-avatar.svg')}}">
+            <img alt="avatar" class="w-24 h-24 rounded-full mr-4 object-cover" src="{{asset('img/default/default-avatar.svg')}}">
         @endif
         <div class="flex flex-col items-start justify-center">
             <a href="{{$u->profileLink()}}">
