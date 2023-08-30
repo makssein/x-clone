@@ -15,6 +15,14 @@ class SettingsController extends Controller
     }
 
     public function newInfo(NewInfoRequest $request) {
+        if(auth()->user()->username === 'user') { //это тестовый аккаунт для тех, кто не хочет регистрироваться, на нем нельзя менять данные, нужные для логина
+            return response()->json([
+                'status' => true,
+                'type' => 'success',
+                'message' => 'На данном аккаунте нельзя менять имя пользователя.'
+            ]);
+        }
+
         auth()->user()->username = $request->post('username');
         $save = auth()->user()->save();
 
@@ -34,6 +42,14 @@ class SettingsController extends Controller
     }
 
     public function newPassword(NewPasswordRequest $request) {
+        if(auth()->user()->username === 'user') { //это тестовый аккаунт для тех, кто не хочет регистрироваться, на нем нельзя менять данные, нужные для логина
+            return response()->json([
+                'status' => true,
+                'type' => 'success',
+                'message' => 'На данном аккаунте нельзя менять пароль.'
+            ]);
+        }
+
         auth()->user()->password = Hash::make($request->post('new_password'));
         $save = auth()->user()->save();
 
