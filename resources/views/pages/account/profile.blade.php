@@ -193,19 +193,19 @@
         </div>
         <div id="follows_tab">
             <div class="flex flex-col w-full p-8">
-                @php $follows = auth()->user()->follows @endphp
+                @php $follows = $user->follows @endphp
                 @forelse($follows as $u)
                     @include('includes/_users-list', ['isFollowing' => true])  <!--Пользователь точно подписан на своих подписчиков, поэтому true -->
                 @empty
                     <div class="flex justify-center items-center">
-                        <p class="text-gray-300">У вас нет подписок</p>
+                        <p class="text-gray-300">Подписок нет</p>
                     </div>
                 @endforelse
             </div>
         </div>
         <div id="followers_tab">
             <div class="flex flex-col w-full p-8">
-                @php $followers = auth()->user()->followers @endphp
+                @php $followers = $user->followers @endphp
                 @forelse($followers as $u)
                      @php
                          $isFollowing = $follows->contains($u);
@@ -213,7 +213,7 @@
                     @include('includes/_users-list', ['isFollowing' => $isFollowing])
                 @empty
                     <div class="flex justify-center items-center">
-                        <p class="text-gray-300">У вас нет подписок</p>
+                        <p class="text-gray-300">Подписчиков нет</p>
                     </div>
                 @endforelse
             </div>
