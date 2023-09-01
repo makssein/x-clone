@@ -8,7 +8,7 @@
     <meta name="author" content="Maxim Sein">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
 </head>
-<body class="dark dark:bg-slate-950 min-h-screen">
+<body class="bg-slate-950 min-h-screen">
 <div id="toasts" class="fixed right-5 pt-5 z-50"></div>
 <section class="px-32 min-h-screen">
     <main class="container mx-auto min-h-screen">
